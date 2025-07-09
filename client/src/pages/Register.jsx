@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const Register = () => {
@@ -7,6 +7,7 @@ const Register = () => {
         email:'',
         password:''
     });
+    const [error,setError]=useState(null);
 
     const {register}=useAuth();
 
@@ -20,9 +21,29 @@ const Register = () => {
 
     const handleSubmit=async (e)=>{
         e.preventDefault();
-        console.log('Submitting form with:',formData);
-        await register(formData);
-    }
+
+         if(!formData.name||!formData.email||!formData.password){
+        setError('All fields are required');
+        return;
+        }
+
+        try{
+            await register(formData);
+
+            setFormData({
+            name:'',
+            email:'',
+            password:''
+        })
+
+        }catch(err){
+            setError(err.response?.data?.msg||'Registration Failed');
+        }
+    };
+
+    useEffect(()=>{
+        document.querySelector('input[name="name"]')?.focus();
+    },[]);
 
   return (
     <div className='max-w-md rounded-xl mx-auto mt-10 p-6 bg-white shadow '>
@@ -35,7 +56,8 @@ const Register = () => {
             <input name='password' type='password' placeholder='Enter password' value={formData.password}
                 onChange={handleChange} className='w-full p-2 border rounded'/>
             <button type='submit' className='bg-blue-600 text-white px-4 py-2 rounded cursor-pointer'>Register</button>
-        </form>  
+        </form> 
+        {error&&<div className='text-red-500'>{error}</div>} 
     </div>
   )
 }
