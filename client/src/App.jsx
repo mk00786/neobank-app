@@ -5,6 +5,9 @@ import Dashboard from './pages/Dashboard';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import PrivateRoute from './components/PrivateRoute';
+
 function App() {
   return (
     <BrowserRouter>
@@ -12,9 +15,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
-          <Route element={<ProtectedRoute/>}>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
+          {/* <Route element={<ProtectedRoute/>}>
             <Route path='/dashboard' element={<Dashboard/>}/>
-          </Route>
+          </Route> */}
         </Routes>
       </AuthProvider>
     </BrowserRouter>
