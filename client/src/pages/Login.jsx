@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import axios from '../utils/api.js'
 
 const Login = () => {
     const navigate=useNavigate();
     const {login}=useAuth();
+    const location=useLocation();
+
     const [user,setUser]=useState({
       email:'',
       password:''
     });
+    
 
     const handleChange=(e)=>{
       const {name,value}=e.target;
@@ -24,24 +28,17 @@ const Login = () => {
         e.preventDefault();
 
         try{
-          const res=await fetch('http://localhost:5000/api/auth/login',{
-            method:'POST',
-            headers:{
-              'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
+          const res=await axios.post('/auth/login',{
               email:user.email,
-              password:user.password}),
-          });
+              password:user.password
+            });
 
-          const data=await res.json();
-          console.log(data);
-          if(!res.ok) throw new Error(data.msg||'Login Failed');
+          const data=res.data;
           login(data.user);
           localStorage.setItem('token',data.token);
           navigate('/dashboard');
         }catch(err){
-          alert(err.message||'Error logging in');
+          alert(err.response?.data?.msg||'Error logging in');
         }
 
         setUser({

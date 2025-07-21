@@ -1,4 +1,4 @@
-import React, {  createContext, useContext, useEffect, useState } from 'react'
+import React, {  createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/api.js'
 
@@ -8,18 +8,29 @@ export const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null);
     const [authLoading,setAuthLoading]=useState(true);
     const navigate=useNavigate();
+    const token=localStorage.getItem('token');
 
     useEffect(()=>{
+
       const token=localStorage.getItem('token');
-      if(token){
-        axios.get('/auth/me')
-        .then((res)=>setUser(res.data.user))
-        .catch(()=>localStorage.removeItem('token'))
-        .finally(()=>setAuthLoading(false));
-      }else{
+      if(!token){
         setAuthLoading(false);
+        return;
       }
-    },[]);
+
+      const fetchUser=async ()=>{
+        try{
+          const res=axios.get('/auth/me');
+          setUser(res.data.user);
+        }catch(err){
+          console.log('Fetch User Failed:',err.response?.data||err.message);
+          localStorage.removeItem('token')
+        }finally{
+          setAuthLoading(false);
+        }
+      }
+      fetchUser();
+    },[token]);
 
     const register=async (formData)=>{
       try{
@@ -33,20 +44,26 @@ export const AuthProvider = ({children}) => {
     }
 
     const login=async (formData)=>{
+      try{
       const res=await axios.post('/auth/login',formData);
       localStorage.setItem('token',res.data.token);
       setUser(res.data.user);
       navigate('/dashboard');
+      }catch(err){
+        console.error('Login Failed',err.response?.data||err.message);
+      }
     }
 
-    const logout=()=>{
+    const logout=useCallback(()=>{
       setUser(null);
       localStorage.removeItem('token');
       navigate('/login');
-    };
+    },[navigate]);
+
+    
 
   return (
-    <AuthContext.Provider value={{user,login,logout,register,isAuthenticated:!!user,authLoading}}>
+    <AuthContext.Provider value={{user,setUser,token,login,logout,register,isAuthenticated:!!user,authLoading}}>
       {children}
     </AuthContext.Provider>
   )
