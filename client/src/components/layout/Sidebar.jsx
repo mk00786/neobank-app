@@ -1,22 +1,26 @@
 import React from 'react'
-import { NavLink,useLocation } from 'react-router-dom'
-
+import { NavLink } from 'react-router-dom'
+import {LayOutDashboard,Folder,Settings} from 'lucide-react'
 const navItems=[
-    {label:'Dashboard',path:'/dashboard'},
-    {label:'Projects',path:'/dashboard/projects'},
-    {label:'Settings',path:'/dashboard/settings'}
+    {label:'Dashboard',path:'/dashboard',icon:<LayOutDashboard size={18}/>},
+    {label:'Projects',path:'/dashboard/projects',icon:<Folder size={18}/>},
+    {label:'Settings',path:'/dashboard/settings',icon:<Settings size={18}/>}
 ];
 
 const Sidebar = () => {
-    const location=useLocation();
   return (
-    <aside className='w-64 min-h-screen p-4 text-white bg-gray-900'>
-    <h2 className='text-xl font-semibold mb-6'>Neobank</h2>
-    <nav className='flex flex-col gap-4'>
+    <aside className='w-64 min-h-screen p-6 bg-gray-900 text-white shadow-lg'>
+    <h2 className='text-2xl font-bold mb-8 tracking-wide'>Neobank</h2>
+    <nav className='flex flex-col gap-2'>
         {navItems.map(({label,path})=>(
             <NavLink key={path} to={path}
-            className={({isActive})=>`block px-4 py-2 rounded ${isActive?'bg-blue-600':'hover:bg-gray-700'}`}
-            >{label}</NavLink>
+            className={({isActive})=> `px-5 py-3 rounded-lg font-medium transition-colors duration-200 
+              ${
+                isActive
+                  ? 'bg-blue-600 text-white shadow-inner border-l-4 border-blue-400'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            aria-current={({isActive})=>(isActive?'page':undefined)}>{icon}{label}</NavLink>
         ))}
     </nav>
     </aside>

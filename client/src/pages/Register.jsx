@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const [formData,setFormData]=useState({
@@ -8,8 +9,6 @@ const Register = () => {
         password:''
     });
 
-    const [error,setError]=useState(null);
-    const [success,setSuccess]=useState(null);
     const [loading,setLoading]=useState(false);
     const [formErrors,setFormErrors]=useState({});
 
@@ -23,7 +22,6 @@ const Register = () => {
         ))
 
         setFormErrors((preVal)=>({...preVal,[name]:''}));
-        setError(null);//This clears the top-level error like "Registration Failed"
     }
 
     const validateForm=()=>{
@@ -52,24 +50,19 @@ const Register = () => {
         // }
 
         setLoading(true);
-        setError(null);
-        setSuccess(null);
 
         try{
             await register(formData);
-            setSuccess('Registration successfull! Redirecting ...');
+            toast.success('Registration successfull! Redirecting ...');
             setFormData({
             name:'',
             email:'',
             password:''
         })
         setFormErrors({});
-
-        setTimeout(()=>setSuccess(null),3000);
-
         }catch(err){
-            setError(err.response?.data?.msg||'Registration Failed');
-            setSuccess(null);
+            const msg=err.response?.data?.msg||'Registration Failed';
+            toast.error(msg);
         }finally{
             setLoading(false);
         }
@@ -83,27 +76,33 @@ const Register = () => {
     <div className='max-w-md rounded-xl mx-auto mt-10 p-6 bg-white shadow '>
         <h2 className='text-2xl font-bold mb-4 '>Register</h2>
         <form onSubmit={handleSubmit} className='space-y-4'>
-
+            
+            <div>
             <label htmlFor='name' className='block font-medium'>Name</label>
             <input id='name' name='name' type='text' placeholder='Enter name' value={formData.name} 
             onChange={handleChange} className='w-full p-2 border rounded' disabled={loading}/>
             {formErrors.name&&<div className='text-sm text-red-500'>{formErrors.name}</div>}
-            
+            </div>
+
+            <div>
             <label htmlFor='email' className='block font-medium'>Email</label>
             <input id='email' name='email' type='email' placeholder='Enter email' value={formData.email}
                 onChange={handleChange} className='w-full p-2 border rounded' disabled={loading}/>
             {formErrors.email&&<div className='text-sm text-red-500'>{formErrors.email}</div>}
+            </div>
 
+            <div>
             <label htmlFor='password'>Password</label>
             <input id='password' name='password' type='password' placeholder='Enter password' value={formData.password}
                 onChange={handleChange} className='w-full p-2 border rounded' disabled={loading}/>
             {formErrors.password&&<div className='text-sm text-red-500'>{formErrors.password}</div>}
+            </div>
             
-            <button disabled={loading} type='submit' className='bg-blue-600 text-white px-4 py-2 rounded 
-            cursor-pointer'>{loading?'Registering':'Register'}</button>
+            <button disabled={loading} type='submit' 
+            className={`w-full py-2 rounded text-white ${loading?'bg-gray-400 cursor-not-allowed':
+            'bg-blue-600 hover:bg-blue-700'}`}
+            >{loading?'Registering':'Register'}</button>
         </form> 
-        {error&&<div className='text-red-500 mt-3'>{error}</div>} 
-        {success&&<div className='text-green-500 mt-3'>{success}</div>}
     </div>
   )
 }

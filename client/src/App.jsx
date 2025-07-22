@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
+import {Toaster} from 'react-hot-toast';
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +26,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard/>}/>
           </Route> */}
         </Routes>
+        <Toaster position='top-right' reverseOrder={false}/>
       </AuthProvider>
     </BrowserRouter>
   )
