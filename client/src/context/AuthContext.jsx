@@ -11,16 +11,15 @@ export const AuthProvider = ({children}) => {
     const token=localStorage.getItem('token');
 
     useEffect(()=>{
-
-      const token=localStorage.getItem('token');
-      if(!token){
-        setAuthLoading(false);
-        return;
-      }
-
       const fetchUser=async ()=>{
+        const token=localStorage.getItem('token');
+        if(!token){
+          setAuthLoading(false);
+          return;
+        }
+
         try{
-          const res=axios.get('/auth/me');
+          const res=await axios.get('/auth/me');
           setUser(res.data.user);
         }catch(err){
           console.log('Fetch User Failed:',err.response?.data||err.message);
@@ -29,8 +28,9 @@ export const AuthProvider = ({children}) => {
           setAuthLoading(false);
         }
       }
+
       fetchUser();
-    },[token]);
+    },[]);
 
     const register=async (formData)=>{
       try{
@@ -60,7 +60,13 @@ export const AuthProvider = ({children}) => {
       navigate('/login');
     },[navigate]);
 
-    
+    if(authLoading){
+      return (
+        <div className='flex justify-center items-center h-[70vh]'>
+          <div className='animate-spin w-8 h-8 text-blue-600'></div>
+        </div>
+      )
+    }
 
   return (
     <AuthContext.Provider value={{user,setUser,token,login,logout,register,isAuthenticated:!!user,authLoading}}>
