@@ -18,16 +18,17 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
+
+           {/* Protected Routes inside Dashboard Layout */}
           <Route element={<DashboardLayout/>}>
           <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
           <Route path='/dashboard/projects' element={<PrivateRoute><h1>Projects</h1></PrivateRoute>}/>
           <Route path='/dashboard/settings' element={<PrivateRoute><h1>Settings</h1></PrivateRoute>}/>
           <Route path='/summary' element={<PrivateRoute><Summary/></PrivateRoute>}/>
           </Route>
-          {/* <Route element={<ProtectedRoute/>}>
-            <Route path='/dashboard' element={<Dashboard/>}/>
-          </Route> */}
         </Routes>
+
+        {/* Global Toaster Notifications */}
         <Toaster position='top-right' reverseOrder={false}/>
       </AuthProvider>
     </BrowserRouter>

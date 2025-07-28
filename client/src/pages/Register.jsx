@@ -45,7 +45,7 @@ const Register = () => {
       toast.success('Registration successful! Redirecting...');
     } catch (err) {
       const msg = err.response?.data?.msg || 'Registration Failed';
-      toast.error(msg);
+      toast.error(msg.charAt(0).toUpperCase()+msg.slice(1));
     } finally {
       setLoading(false);
     }
@@ -56,11 +56,13 @@ const Register = () => {
   }, []);
 
   return (
-    <div className='max-w-md rounded-xl mx-auto mt-10 p-6 bg-white shadow'>
-      <h2 className='text-2xl font-bold mb-4'>Register</h2>
+    <div className='min-h-screen flex justify-center items-center bg-gray-100 px-4'>
+    <div className='max-w-md w-full bg-white rounded-lg shadow-md p-6'>
+      <h2 className='text-2xl font-semibold text-center mb-6'>Create an Account</h2>
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div>
-          <label htmlFor='name' className='block font-medium'>Name</label>
+        {/* Name */}
+          <label htmlFor='name' className='block text-sm text-gray-700 mb-1 font-medium'>Name</label>
           <input
             id='name'
             name='name'
@@ -68,38 +70,46 @@ const Register = () => {
             placeholder='Enter name'
             value={formData.name}
             onChange={handleChange}
-            className='w-full p-2 border rounded'
+            className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2
+            focus:ring-blue-400'
             disabled={loading}
+            required
           />
-          {formErrors.name && <div className='text-sm text-red-500'>{formErrors.name}</div>}
+          {formErrors.name && <div className='text-sm text-red-500 mt-1'>{formErrors.name}</div>}
         </div>
 
+        {/* Email */}
         <div>
-          <label htmlFor='email' className='block font-medium'>Email</label>
+          <label htmlFor='email' className='block text-sm text-gray-700 mb-1 font-medium'>Email</label>
           <input
             id='email'
             name='email'
             type='email'
-            placeholder='Enter email'
+            placeholder='Enter your email'
             value={formData.email}
             onChange={handleChange}
-            className='w-full p-2 border rounded'
+            className='w-full p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2
+            focus:ring-blue-400'
             disabled={loading}
+            required
           />
-          {formErrors.email && <div className='text-sm text-red-500'>{formErrors.email}</div>}
+          {formErrors.email && <div className='text-sm text-red-500 mt-1'>{formErrors.email}</div>}
         </div>
 
+        {/* Password */}
         <div>
-          <label htmlFor='password' className='block font-medium'>Password</label>
+          <label htmlFor='password' className='block text-sm font-medium text-gray-700 mb-1'>Password</label>
           <input
             id='password'
             name='password'
             type='password'
-            placeholder='Enter password'
+            placeholder='Create a password'
             value={formData.password}
             onChange={handleChange}
-            className='w-full p-2 border rounded'
+            className='w-full p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2
+            focus:ring-blue-400'
             disabled={loading}
+            required
           />
           {formErrors.password && <div className='text-sm text-red-500'>{formErrors.password}</div>}
         </div>
@@ -107,11 +117,12 @@ const Register = () => {
         <button
           disabled={loading}
           type='submit'
-          className={`w-full py-2 rounded text-white ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-        >
+          className={`w-full py-2 rounded-md text-white transition-colors 
+          ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>
           {loading ? 'Registering...' : 'Register'}
         </button>
       </form>
+    </div>
     </div>
   );
 };

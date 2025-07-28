@@ -31,12 +31,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await login({
-        email: user.email,
-        password: user.password,
-        rememberMe,
-      });
-
+      await login({...user,rememberMe});
       const redirectTo = location.state?.from?.pathname || '/dashboard';
       navigate(redirectTo);
     } catch (err) {
@@ -47,8 +42,10 @@ const Login = () => {
     }
   };
 
+
+
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
@@ -58,7 +55,7 @@ const Login = () => {
         </h1>
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
             Email
           </label>
           <input
@@ -71,12 +68,13 @@ const Login = () => {
             disabled={loading}
             required
             autoFocus
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2
+            focus:ring-blue-400"
           />
         </div>
 
         <div className="relative mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
+          <label htmlFor="password" className="block text-sm font-medium mb-1 text-gray-700">
             Password
           </label>
           <input
@@ -88,7 +86,8 @@ const Login = () => {
             onChange={handleChange}
             disabled={loading}
             required
-            className="w-full border border-gray-300 rounded-md p-2 pr-10"
+            className="w-full border border-gray-300 rounded-md p-2 pr-10 focus:outline-none 
+            focus:ring-2 focus:ring-blue-400"
           />
           <span
             onClick={() => setShowPassword((prev) => !prev)}
@@ -108,7 +107,7 @@ const Login = () => {
             disabled={loading}
             className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
           />
-          <label htmlFor="rememberMe" className="text-sm">
+          <label htmlFor="rememberMe" className="text-sm text-gray-700">
             Remember Me
           </label>
         </div>

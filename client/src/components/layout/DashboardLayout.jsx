@@ -4,12 +4,12 @@ import React from 'react'
 
 const DashboardLayout = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <aside className="w-64 h-screen sticky top-0 bg-white shadow">
       <Sidebar/>
       <main className="flex-1 p-6">
         <Outlet/>
       </main>
-    </div>
+    </aside>
   )
 }
 
