@@ -89,4 +89,4 @@ npm run dev
 Feel free to fork or suggest improvements! This project is open for learning and collaboration.
 
 📘 License
-MIT © 2025 Mridul Kapoor
+MIT © 2025 Mridul
