@@ -1,92 +1,121 @@
-# 🏦 NeoBank — MERN Stack Authentication Flow
+# NeoBank — MERN Stack Authentication Flow
 
-A modern banking dashboard web app built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js) with full user authentication and authorization flow, including protected routes and secure token handling.
-
----
-
-## 🚀 Features
-
-- 🔐 JWT-based User Authentication
-- 📄 Register, Login, Auto Login with `localStorage`
-- 🛡️ Protected Backend Routes
-- 👨‍💻 React Context-based Auth State Management
-- ✅ Form Validation with Feedback
-- 🧭 Client-side Routing with React Router
-- 📦 Clean and Scalable Folder Structure
+A modern banking dashboard web app built using the MERN stack (MongoDB, Express.js, React.js, Node.js) featuring full user authentication and authorization, including protected routes and secure token handling.
 
 ---
 
-## 📂 Project Structure (Simplified)
+##  Features
+
+- **JWT-based User Authentication** (register, login, auto-login with `localStorage`)
+- **Protected Backend Routes** using middleware to validate token
+- **React Context API** for managing authentication state
+- **Client-side Routing** with React Router
+- **Form Validation** with real-time feedback
+- **Clean & Scalable Structure**
+
+---
+
+##  Project Structure
 
 NeoBank/
-├── client/ # React Frontend
+
+├── client/ # React frontend
+
 │ ├── src/
-│ │ ├── context/ # AuthContext using createContext + useReducer
-│ │ ├── pages/ # Register, Login, Dashboard
-│ │ ├── components/ # Navbar, PrivateRoute, etc.
-│ │ └── App.js # Routes config
-│ └── ...
-└── server/ # Express Backend
-├── controllers/ # Auth Logic
+
+│ ├── context/ # AuthContext using createContext + useReducer
+
+│ ├── pages/ # Register, Login, Dashboard
+
+│ ├── components/ # Navbar, PrivateRoute, etc.
+
+│ └── App.js # Route configuration
+
+└── server/ # Express backend
+
+├── controllers/ # Authentication logic
+
 ├── middleware/ # authMiddleware.js (JWT verification)
-├── models/ # User Schema
+
+├── models/ # User schema (MongoDB/Mongoose)
+
 ├── routes/ # authRoutes.js
-├── config/ # DB connection
-└── server.js
+
+├── config/ # Database connection setup
+
+└── server.js # Server entry point
 
 ---
 
-## 🧠 Auth Flow Summary
-
-### 🔄 1. **Register**
-- Frontend calls `/api/auth/register` with form data
-- Backend validates → creates user → returns JWT token
-- Frontend stores token in `localStorage` and updates context
-
-### 🔐 2. **Login**
-- POST to `/api/auth/login` with credentials
-- On success → token + user returned → stored in `localStorage`
-
-### 🔁 3. **Auto Login**
-- On App load → check `localStorage.token`
-- If valid → call `/api/auth/me` → restore user in context
-
-### 🛡️ 4. **Protected Routes**
-- Frontend wraps components with `<PrivateRoute />`
-- Backend uses `authMiddleware` to validate JWT for protected APIs
+##  Tech Stack
+-------------------------------------------------------------------------------
+| Frontend      | Backend           | Auth        | Tools                     |
+|---------------|-------------------|-------------|---------------------------|
+| React         | Node.js & Express | JWT         | ESLint, Prettier, Postman |
+| Tailwind CSS  | MongoDB (Mongoose)| bcrypt      |                           |
+-------------------------------------------------------------------------------
 
 ---
 
-## ✅ Tech Stack
+##  Setup & Running Locally
 
-- **Frontend**: React, React Router, Context API, Tailwind CSS
-- **Backend**: Express.js, MongoDB (Mongoose), JWT
-- **Auth**: bcrypt for hashing, jsonwebtoken for token
-- **Dev Tools**: Postman, ESLint, Prettier
-
----
-
-## 🧪 How to Run
-
-### 🔧 Backend
+### Backend
 ```bash
 cd server
 npm install
+# Create .env file using the template below
 npm run dev
+```
 
-### 🛠️ To-Do Next
- Dashboard UI Enhancements
+### Frontend
+```bash
+cd client
+npm install
+npm start
+```
 
- Logout functionality
+Visit the frontend (typically at http://localhost:3000 or http://localhost:3001 depending on your setup).
 
- Token Expiry Handling
+---
 
- Toast notifications for feedback
+## Environment Variables
 
- Role-based Access Control (Admin/User)
+### Backend (server/.env)
 
- 🤝 Contributions
-Feel free to fork or suggest improvements! This project is open for learning and collaboration.
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
 
-📘 License
-MIT © 2025 Mridul
+### Frontend (client/.env — if needed)
+
+REACT_APP_API_URL=http://localhost:5000
+
+---
+
+## Screenshots
+
+
+---
+
+## Further Enhancements
+
+•  Logout functionality
+
+•  Handling JWT token expiry and refresh flow
+
+•  Implementing role-based access control
+
+•  Adding toast notifications for user feedback
+
+•  Dashboard UI enhancements (charts, transaction summaries, etc.)
+
+---
+
+## Contribution
+
+Contributions and suggestions are welcome! Feel free to fork, send PRs, or open issues.
+
+---
+
+## License
+© 2025 Mridul
+
