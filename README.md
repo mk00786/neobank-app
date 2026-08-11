@@ -74,7 +74,7 @@ npm install
 npm start
 ```
 
-Visit the frontend (typically at http://localhost:3000 or http://localhost:3001 depending on your setup).
+Visit the frontend (typically at http://localhost:3000 ).
 
 ---
 
